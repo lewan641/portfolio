@@ -21,7 +21,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${inter.variable} ${rubik.variable}`}>
-      <body className="font-sans antialiased">{children}</body>
+      <body className="font-sans antialiased">
+        <noscript><style>{"[data-loader]{display:none}"}</style></noscript>
+        {children}
+      </body>
     </html>
   );
 }
