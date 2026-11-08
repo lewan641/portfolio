@@ -147,9 +147,13 @@ export const projects: Project[] = [
     kind: "Freelance · client project",
     period: "2025",
     text: "The office updates currency, gold and silver prices from a phone and exports a ready-to-post image for social media in one tap.",
-    points: ["Mobile-friendly editing", "One-tap image export"],
+    points: ["Buy / sell rates for 8 currencies, silver and gold, with a live clock", "Mobile-friendly editing", "One-tap image export, ready to post on social media"],
     tech: ["React", "HTML", "CSS"],
     link: { href: "https://creative-fenglisu-045c0d.netlify.app/", label: "Open live site" },
+    shots: [
+      { src: "/shots/fx-currencies.webp", alt: "Currency buy / sell rates with flags", mobile: true },
+      { src: "/shots/fx-metals.webp", alt: "Silver and gold prices", mobile: true },
+    ],
   },
 ];
 

@@ -56,12 +56,12 @@ export function Gallery({ desktop = [], mobile = [] }: { desktop?: Shot[]; mobil
       )}
 
       {isMobile ? (
-        <div className="flex snap-x gap-5 overflow-x-auto pb-2 sm:justify-start">
+        <div className="flex snap-x items-start gap-5 overflow-x-auto pb-2 sm:justify-start">
           {shots.map((s, i) => (
             <button key={s.src} onClick={() => setOpen(i)} className="group w-[200px] shrink-0 snap-start text-left sm:w-[230px]">
               <div className="overflow-hidden rounded-[2rem] border-[6px] border-[#1b2236] bg-black shadow-2xl shadow-black/50 transition group-hover:-translate-y-1 group-hover:border-accent/60">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={s.src} alt={s.alt} loading="lazy" className="block aspect-[390/844] w-full object-cover object-top" />
+                <img src={s.src} alt={s.alt} loading="lazy" className="block h-auto w-full" />
               </div>
               <p className="mt-3 text-xs leading-relaxed text-dim">{s.alt}</p>
             </button>
