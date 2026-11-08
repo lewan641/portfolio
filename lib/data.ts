@@ -114,8 +114,8 @@ export const projects: Project[] = [
     name: "Fast Pizza Qaladze",
     tagline: "QR table ordering for a restaurant",
     kind: "Freelance · client project",
-    period: "Sep 2026",
-    text: "Customers scan the QR code on their table, browse the menu and order — no app, no account. Orders appear instantly on the kitchen screen with the table number.",
+    period: "2025 — 2026",
+    text: "Started as a digital menu website for the restaurant, then grew into a full ordering system: customers scan the QR code on their table, browse the menu and order — no app, no account. Orders appear instantly on the kitchen screen with the table number.",
     points: [
       "Live kitchen screen with Supabase Realtime",
       "Row-Level Security so the public key can only do what customers are allowed to do",
@@ -149,15 +149,7 @@ export const projects: Project[] = [
     text: "The office updates currency, gold and silver prices from a phone and exports a ready-to-post image for social media in one tap.",
     points: ["Mobile-friendly editing", "One-tap image export"],
     tech: ["React", "HTML", "CSS"],
-  },
-  {
-    name: "Restaurant Digital Menu",
-    tagline: "Interactive menu website",
-    kind: "Freelance · client project",
-    period: "2025",
-    text: "A fast, mobile-first digital menu for a local restaurant, deployed on Netlify.",
-    points: [],
-    tech: ["HTML", "CSS", "JavaScript", "Netlify"],
+    link: { href: "https://creative-fenglisu-045c0d.netlify.app/", label: "Open live site" },
   },
 ];
 
