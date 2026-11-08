@@ -4,8 +4,10 @@ import { useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import { Maximize2, X } from "lucide-react";
+import { Maximize2 } from "lucide-react";
+import { Lightbox } from "@/components/Lightbox";
 import type { Shot } from "@/lib/data";
+import { dims } from "@/lib/shot-sizes";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -16,7 +18,7 @@ gsap.registerPlugin(useGSAP, ScrollTrigger);
 export function KogaShowcase({ shots }: { shots: Shot[] }) {
   const root = useRef<HTMLDivElement>(null);
   const track = useRef<HTMLDivElement>(null);
-  const [open, setOpen] = useState<Shot | null>(null);
+  const [open, setOpen] = useState<number | null>(null);
 
   useGSAP(
     () => {
@@ -58,7 +60,7 @@ export function KogaShowcase({ shots }: { shots: Shot[] }) {
         {shots.map((s, i) => (
           <figure key={s.src} data-card className="w-[85vw] shrink-0 sm:w-[60vw] lg:w-[min(62vw,860px)]">
             <button
-              onClick={() => setOpen(s)}
+              onClick={() => setOpen(i)}
               data-cursor
               className="group relative block w-full overflow-hidden rounded-2xl border border-line bg-panel text-left shadow-2xl shadow-black/50 transition hover:border-accent/60"
             >
@@ -67,7 +69,7 @@ export function KogaShowcase({ shots }: { shots: Shot[] }) {
                 <span className="ml-auto font-mono text-[10px] text-dim">0{i + 1} / 0{shots.length}</span>
               </div>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={s.src} alt={s.alt} loading="lazy" className="block aspect-[16/10] w-full object-cover object-top transition duration-700 group-hover:scale-[1.03]" />
+              <img src={s.src} alt={s.alt} {...dims(s.src)} loading="lazy" className="block aspect-[16/10] w-full object-cover object-top transition duration-700 group-hover:scale-[1.03]" />
               <span className="absolute bottom-3 right-3 rounded-full bg-black/60 p-2 opacity-0 backdrop-blur transition group-hover:opacity-100">
                 <Maximize2 className="size-4" />
               </span>
@@ -80,16 +82,7 @@ export function KogaShowcase({ shots }: { shots: Shot[] }) {
         <div data-progress className="h-px origin-left scale-x-0 bg-gradient-to-r from-accent to-accent-2" />
       </div>
 
-      {open && (
-        <div className="fixed inset-0 z-[90] flex items-center justify-center bg-black/90 p-4 backdrop-blur-sm" onClick={() => setOpen(null)} role="dialog" aria-modal="true" aria-label={open.alt}>
-          <button aria-label="Close" className="absolute right-4 top-4 rounded-full bg-white/10 p-2 hover:bg-white/20" onClick={() => setOpen(null)}><X className="size-5" /></button>
-          <figure className="max-w-6xl" onClick={(e) => e.stopPropagation()}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={open.src} alt={open.alt} className="max-h-[82vh] w-full rounded-lg object-contain" />
-            <figcaption className="mt-3 text-center text-sm text-dim">{open.alt}</figcaption>
-          </figure>
-        </div>
-      )}
+      <Lightbox shots={shots} index={open} onClose={() => setOpen(null)} />
     </div>
   );
 }

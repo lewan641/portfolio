@@ -21,12 +21,12 @@ export function Motion() {
   const bar = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
-    // Positions are measured once; re-measure when the layout changes later
-    // (pinned sections are added, lazy images finish loading, fonts swap in).
+    // Positions are measured once; re-measure after the pinned section is set up and fonts swap in.
+    // Images carry width/height (lib/shot-sizes.ts), so lazy loading doesn't shift the layout —
+    // refreshing on every image load would interrupt in-progress smooth scrolls (menu jumps).
+    ScrollTrigger.config({ ignoreMobileResize: true });
     let t: ReturnType<typeof setTimeout>;
     const refresh = () => { clearTimeout(t); t = setTimeout(() => ScrollTrigger.refresh(), 150); };
-    const imgs = Array.from(document.images).filter((i) => !i.complete);
-    imgs.forEach((i) => i.addEventListener("load", refresh, { once: true }));
     window.addEventListener("load", refresh);
     document.fonts?.ready.then(refresh);
     const settle = setTimeout(refresh, 400);
@@ -46,7 +46,7 @@ export function Motion() {
           duration: 1,
           ease: "power3.out",
           onStart() { gsap.set(el, { transition: "none" }); },
-          onComplete() { gsap.set(el, { clearProps: "transition" }); },
+          onComplete() { gsap.set(el, { clearProps: "transition,transform,translate,rotate,scale" }); },
           scrollTrigger: { trigger: el, start: "top 88%" },
         });
       });
@@ -61,7 +61,7 @@ export function Motion() {
           ease: "power3.out",
           stagger: 0.09,
           onStart() { gsap.set(el.children, { transition: "none" }); },
-          onComplete() { gsap.set(el.children, { clearProps: "transition" }); },
+          onComplete() { gsap.set(el.children, { clearProps: "transition,transform,translate,rotate,scale" }); },
           scrollTrigger: { trigger: el, start: "top 85%" },
         });
       });
@@ -106,7 +106,6 @@ export function Motion() {
     return () => {
       clearTimeout(t); clearTimeout(settle);
       window.removeEventListener("load", refresh);
-      imgs.forEach((i) => i.removeEventListener("load", refresh));
     };
   });
 

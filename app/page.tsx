@@ -8,6 +8,7 @@ import { Marquee } from "@/components/Marquee";
 import { Motion } from "@/components/motion/Motion";
 import { Cursor } from "@/components/motion/Cursor";
 import { Magnetic } from "@/components/motion/Magnetic";
+import { MobileMenu } from "@/components/MobileMenu";
 import { koga, languages, profile, projects, skills, timeline } from "@/lib/data";
 
 const nav = [
@@ -50,11 +51,14 @@ export default function Home() {
           <nav className="hidden gap-7 text-sm text-dim md:flex">
             {nav.map((n) => <a key={n.href} href={n.href} className="relative transition hover:text-ink after:absolute after:-bottom-1 after:left-0 after:h-px after:w-full after:origin-right after:scale-x-0 after:bg-accent after:transition-transform hover:after:origin-left hover:after:scale-x-100">{n.label}</a>)}
           </nav>
-          <Magnetic>
-            <a href={profile.cv} download className="inline-flex items-center gap-2 rounded-full bg-accent px-4 py-2 text-sm font-medium text-white transition hover:brightness-110">
-              <Download className="size-4" /> CV
-            </a>
-          </Magnetic>
+          <div className="flex items-center gap-2">
+            <Magnetic>
+              <a href={profile.cv} download className="inline-flex items-center gap-2 rounded-full bg-accent px-4 py-2 text-sm font-medium text-white transition hover:brightness-110">
+                <Download className="size-4" /> CV
+              </a>
+            </Magnetic>
+            <MobileMenu items={nav} />
+          </div>
         </div>
       </header>
 
