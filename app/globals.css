@@ -1,26 +1,35 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-rubik), var(--font-inter), ui-sans-serif, sans-serif;
+  --color-bg: #070a13;
+  --color-panel: #0e1322;
+  --color-line: #1d2538;
+  --color-ink: #e8ecf5;
+  --color-dim: #94a0b8;
+  --color-accent: #6d72ff;
+  --color-accent-2: #22d3ee;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
+body { background: var(--color-bg); color: var(--color-ink); }
+::selection { background: color-mix(in oklab, var(--color-accent) 45%, transparent); }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.glow {
+  background:
+    radial-gradient(60rem 30rem at 85% -10%, color-mix(in oklab, var(--color-accent) 22%, transparent), transparent 70%),
+    radial-gradient(40rem 24rem at -10% 20%, color-mix(in oklab, var(--color-accent-2) 12%, transparent), transparent 70%);
 }
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.grid-bg {
+  background-image:
+    linear-gradient(to right, rgb(255 255 255 / .035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(255 255 255 / .035) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse at top, black 30%, transparent 75%);
 }
+.text-gradient {
+  background: linear-gradient(90deg, #a5a8ff, #22d3ee);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
