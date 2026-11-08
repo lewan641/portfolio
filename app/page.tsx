@@ -135,7 +135,7 @@ export default function Home() {
             </SectionTitle>
             <div className="grid gap-8">
               {projects.map((p, i) => (
-                <article key={p.name} data-reveal className={`group grid grid-cols-1 gap-8 rounded-3xl border border-line bg-bg/60 p-6 transition duration-500 hover:border-accent/40 sm:p-10 [&>*]:min-w-0 ${p.shots ? "lg:grid-cols-[1.1fr_1fr]" : ""}`}>
+                <article key={p.name} data-reveal className={`group grid grid-cols-1 gap-8 rounded-3xl border border-line bg-bg/60 p-6 transition duration-500 hover:border-accent/40 sm:p-10 [&>*]:min-w-0 ${p.shots && p.shots.every((x) => x.mobile) ? "lg:grid-cols-[1.1fr_1fr]" : ""}`}>
                   <div>
                     <div className="flex items-center gap-3">
                       <span className="font-mono text-xs text-dim">0{i + 1}</span>
@@ -158,7 +158,7 @@ export default function Home() {
                       </Magnetic>
                     )}
                   </div>
-                  {p.shots && <Gallery mobile={p.shots} />}
+                  {p.shots && <Gallery desktop={p.shots.filter((x) => !x.mobile)} mobile={p.shots.filter((x) => x.mobile)} />}
                 </article>
               ))}
             </div>

@@ -110,6 +110,15 @@ export const projects: Project[] = [
       "JWT auth, Web Push notifications and scheduled event reminders",
     ],
     tech: ["ASP.NET Core 8", "EF Core", "PostgreSQL", "Next.js 16", "React 19", "TailwindCSS", "GSAP", "Docker", "Vercel", "Render"],
+    shots: [
+      { src: "/shots/xanchy-seatmap.webp", alt: "Interactive stadium seat map — pick a section, zoom and pan, see tiers and availability" },
+      { src: "/shots/xanchy-event.webp", alt: "Event page — match preview, countdown and ticket selection" },
+      { src: "/shots/xanchy-checkout.webp", alt: "Checkout — selected seats, payment methods and promo code" },
+      { src: "/shots/xanchy-tickets.webp", alt: "My Tickets — confirmed bookings with QR codes" },
+      { src: "/shots/xanchy-home.webp", alt: "Home — featured events, football matches and cinema" },
+      { src: "/shots/xanchy-admin.webp", alt: "Admin dashboard — events, venues, revenue and activity log" },
+      { src: "/shots/xanchy-organizer.webp", alt: "Organizer dashboard — venues, events, tickets sold and revenue" },
+    ],
   },
   {
     name: "Fast Pizza Qaladze",
