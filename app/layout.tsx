@@ -6,6 +6,7 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const rubik = Rubik({ subsets: ["latin"], variable: "--font-rubik", weight: ["500", "600", "700"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://portfolio-ruddy-one-25.vercel.app"),
   title: "Lewan Hassan — Full-Stack Developer",
   description:
     "Full-stack developer (ASP.NET Core, Next.js, PostgreSQL) from Kurdistan. Creator of KOGA, a retail ERP & POS system used daily by a 2-branch business.",

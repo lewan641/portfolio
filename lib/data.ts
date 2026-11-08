@@ -12,6 +12,7 @@ export const profile = {
   github: "https://github.com/lewan641",
   linkedin: "https://www.linkedin.com/in/lewan-hassan-298087396",
   cv: "/Lewan_Hassan_CV.pdf",
+  website: "https://portfolio-ruddy-one-25.vercel.app",
   intro:
     "I build complete products on my own — database, API, interface, tests and deployment — and I run them in the real world. My retail system KOGA handles daily sales, stock and accounting for a business with 2 branches and 10+ staff.",
 };
