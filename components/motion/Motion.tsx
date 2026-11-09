@@ -14,7 +14,6 @@ gsap.registerPlugin(useGSAP, ScrollTrigger, SplitText);
  *   data-stagger           its direct children reveal one after another
  *   data-split             heading reveals word by word
  *   data-count="1100"      number counts up (keeps data-suffix / data-prefix)
- *   data-parallax="0.15"   moves slower/faster than the page
  * Everything is skipped when the visitor prefers reduced motion.
  */
 export function Motion() {
@@ -92,15 +91,6 @@ export function Motion() {
           },
         });
       });
-
-      gsap.utils.toArray<HTMLElement>("[data-parallax]").forEach((el) => {
-        const speed = Number(el.dataset.parallax) || 0.15;
-        gsap.to(el, {
-          yPercent: -100 * speed,
-          ease: "none",
-          scrollTrigger: { trigger: el, start: "top bottom", end: "bottom top", scrub: true },
-        });
-      });
     });
 
     return () => {
@@ -113,7 +103,7 @@ export function Motion() {
     <div
       ref={bar}
       aria-hidden
-      className="fixed inset-x-0 top-0 z-[60] h-[3px] origin-left scale-x-0 bg-gradient-to-r from-accent via-fuchsia-400 to-accent-2"
+      className="fixed inset-x-0 top-0 z-[60] h-[3px] origin-left scale-x-0 bg-accent"
     />
   );
 }

@@ -1,12 +1,10 @@
-import { ArrowUpRight, Download, Mail, MapPin, Phone, MessageCircle, CheckCircle2 } from "lucide-react";
+import { ArrowUpRight, Download } from "lucide-react";
 import { Gallery } from "@/components/Gallery";
-import { GithubIcon, LinkedinIcon } from "@/components/BrandIcons";
 import { Hero } from "@/components/Hero";
 import { KogaShowcase } from "@/components/KogaShowcase";
 import { Architecture } from "@/components/Architecture";
 import { Marquee } from "@/components/Marquee";
 import { Motion } from "@/components/motion/Motion";
-import { Cursor } from "@/components/motion/Cursor";
 import { Magnetic } from "@/components/motion/Magnetic";
 import { MobileMenu } from "@/components/MobileMenu";
 import { koga, languages, profile, projects, skills, timeline } from "@/lib/data";
@@ -21,105 +19,112 @@ const nav = [
 
 const marquee = ["C#", "ASP.NET Core", "PostgreSQL", "Next.js", "React", "TypeScript", "EF Core", "Tailwind", "Playwright", "Docker", "GitHub Actions", "Supabase"];
 
+const two = (n: number) => String(n).padStart(2, "0");
+
 function Tag({ children }: { children: React.ReactNode }) {
-  return <span className="rounded-md border border-line bg-white/[.03] px-2 py-0.5 text-xs text-dim">{children}</span>;
+  return <span className="border border-line px-2 py-1 font-mono text-[11px] leading-none text-dim">{children}</span>;
 }
 
-function SectionTitle({ eyebrow, title, children, n }: { eyebrow: string; title: string; children?: React.ReactNode; n?: string }) {
+/** Bulleted line with a small accent square instead of an icon. */
+function Point({ children }: { children: React.ReactNode }) {
   return (
-    <div className="mb-12 max-w-3xl">
-      <p data-reveal className="mb-3 flex items-center gap-3 font-display text-sm font-medium uppercase tracking-[.2em] text-accent-2">
-        {n && <span className="font-mono text-xs text-dim">{n}</span>}
-        <span className="h-px w-8 bg-accent-2/60" />
-        {eyebrow}
-      </p>
-      <h2 data-split className="font-display text-4xl font-semibold tracking-tight sm:text-5xl">{title}</h2>
-      {children && <p data-reveal className="mt-5 text-lg leading-relaxed text-dim">{children}</p>}
+    <li className="flex gap-3">
+      <span className="mt-[0.6em] size-1.5 shrink-0 bg-accent" aria-hidden />
+      <span>{children}</span>
+    </li>
+  );
+}
+
+function SectionTitle({ n, eyebrow, title, children }: { n: string; eyebrow: string; title: string; children?: React.ReactNode }) {
+  return (
+    <div className="mb-12 grid gap-6 border-t border-ink pt-5 lg:grid-cols-[1fr_3fr]">
+      <p data-reveal className="label flex gap-4 text-dim"><span className="text-accent">{n}</span>{eyebrow}</p>
+      <div className="max-w-3xl">
+        <h2 data-split className="font-display text-4xl font-semibold leading-[1.02] tracking-[-0.03em] sm:text-6xl">{title}</h2>
+        {children && <p data-reveal className="mt-6 text-lg leading-relaxed text-dim">{children}</p>}
+      </div>
     </div>
   );
 }
 
 export default function Home() {
   return (
-    <div className="grain">
+    <>
       <Motion />
-      <Cursor />
 
-      <header className="fixed inset-x-0 top-0 z-50 border-b border-line/50 bg-bg/60 backdrop-blur-md">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
-          <a href="#top" className="font-display text-lg font-semibold">lewan<span className="text-accent">.</span>dev</a>
-          <nav className="hidden gap-7 text-sm text-dim md:flex">
-            {nav.map((n) => <a key={n.href} href={n.href} className="relative transition hover:text-ink after:absolute after:-bottom-1 after:left-0 after:h-px after:w-full after:origin-right after:scale-x-0 after:bg-accent after:transition-transform hover:after:origin-left hover:after:scale-x-100">{n.label}</a>)}
+      <header className="fixed inset-x-0 top-0 z-50 border-b border-line bg-bg">
+        <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:px-6">
+          <a href="#top" className="font-display text-lg font-semibold tracking-tight">Lewan Hassan</a>
+          <nav className="label hidden gap-7 md:flex">
+            {nav.map((n) => <a key={n.href} href={n.href} className="transition-colors hover:text-accent">{n.label}</a>)}
           </nav>
           <div className="flex items-center gap-2">
-            <Magnetic>
-              <a href={profile.cv} download className="inline-flex items-center gap-2 rounded-full bg-accent px-4 py-2 text-sm font-medium text-white transition hover:brightness-110">
-                <Download className="size-4" /> CV
-              </a>
-            </Magnetic>
+            <a href={profile.cv} download className="label inline-flex items-center gap-2 bg-ink px-3.5 py-2.5 text-bg transition-colors hover:bg-accent">
+              <Download className="size-3.5" /> CV
+            </a>
             <MobileMenu items={nav} />
           </div>
         </div>
       </header>
 
-      <main className="pt-16">
+      <main className="pt-14">
         <Hero />
 
         <Marquee items={marquee} />
 
-        {/* KOGA */}
-        <section id="work" className="pt-28">
+        {/* 01 — KOGA */}
+        <section id="work" className="pt-24">
           <div className="mx-auto max-w-6xl px-4 sm:px-6">
             <SectionTitle n="01" eyebrow="Featured work" title={`${koga.name} — ${koga.tagline}`}>{koga.summary}</SectionTitle>
-            <div data-stagger className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-dim">
-              <span>{koga.period}</span>
-              <span className="flex items-center gap-1.5"><MapPin className="size-4" />{koga.context}</span>
-              <span>Solo: design, backend, frontend, testing, DevOps</span>
-            </div>
+            <dl data-stagger className="grid gap-x-10 gap-y-4 border-y border-line py-5 text-sm sm:grid-cols-3">
+              <div><dt className="label text-dim">When</dt><dd className="mt-1">{koga.period}</dd></div>
+              <div><dt className="label text-dim">Where</dt><dd className="mt-1">{koga.context}</dd></div>
+              <div><dt className="label text-dim">Role</dt><dd className="mt-1">Solo: design, backend, frontend, testing, DevOps</dd></div>
+            </dl>
           </div>
 
           <KogaShowcase shots={koga.desktop} />
 
           <div className="mx-auto max-w-6xl px-4 sm:px-6">
-            <p className="text-xs text-dim/70">{koga.note}</p>
+            <p className="label text-dim">{koga.note}</p>
 
-            <dl data-stagger className="mt-16 grid grid-cols-2 gap-4 lg:grid-cols-4">
-              {koga.numbers.map((n) => {
+            <dl data-stagger className="mt-16 grid grid-cols-2 border-t border-ink lg:grid-cols-4">
+              {koga.numbers.map((n, i) => {
                 const num = Number(n.value.replace(/[^\d]/g, ""));
                 const pre = n.value.startsWith("~") ? "~" : "";
                 const suf = n.value.replace(/[~\d,]/g, "");
                 return (
-                  <div key={n.label} className="rounded-2xl border border-line bg-panel p-6">
-                    <dd className="font-display text-4xl font-semibold text-accent" data-count={num} data-prefix={pre} data-suffix={suf}>{n.value}</dd>
+                  <div key={n.label} className={`border-b border-line py-6 pr-4 ${i % 2 ? "border-l pl-4" : ""} ${i ? "lg:border-l lg:pl-6" : ""}`}>
+                    <dd className="font-display text-5xl font-semibold tracking-tight" data-count={num} data-prefix={pre} data-suffix={suf}>{n.value}</dd>
                     <dt className="mt-2 text-sm text-dim">{n.label}</dt>
                   </div>
                 );
               })}
             </dl>
 
-            <div className="mt-24 grid gap-12 lg:grid-cols-[1fr_2fr]">
-              <div data-reveal className="lg:sticky lg:top-28 lg:self-start">
-                <h3 className="font-display text-2xl font-semibold">Why I built it</h3>
-                <p className="mt-4 leading-relaxed text-dim">{koga.problem}</p>
+            <div className="mt-24 grid gap-10 lg:grid-cols-[1fr_3fr]">
+              <div data-reveal className="lg:sticky lg:top-24 lg:self-start">
+                <h3 className="label text-dim">Why I built it</h3>
+                <p className="mt-4 text-lg leading-relaxed">{koga.problem}</p>
               </div>
-              <div data-stagger className="grid gap-4 sm:grid-cols-2">
+              <ol data-stagger className="grid sm:grid-cols-2 sm:gap-x-10">
                 {koga.highlights.map((h, i) => (
-                  <div key={h.title} className="group relative overflow-hidden rounded-2xl border border-line bg-panel p-6 transition duration-500 hover:-translate-y-1 hover:border-accent/50">
-                    <span className="absolute -right-2 -top-4 font-display text-7xl font-bold text-white/[.03] transition group-hover:text-accent/10">0{i + 1}</span>
-                    <h4 className="flex items-start gap-2 font-semibold"><CheckCircle2 className="mt-0.5 size-4 shrink-0 text-accent-2" />{h.title}</h4>
-                    <p className="mt-3 text-sm leading-relaxed text-dim">{h.text}</p>
-                  </div>
+                  <li key={h.title} className="border-t border-ink py-6">
+                    <p className="label text-accent">{two(i + 1)}</p>
+                    <h4 className="mt-3 font-display text-2xl font-semibold tracking-tight">{h.title}</h4>
+                    <p className="mt-3 leading-relaxed text-dim">{h.text}</p>
+                  </li>
                 ))}
-              </div>
+              </ol>
             </div>
 
             <div className="mt-24">
-              <h3 data-split className="mb-8 font-display text-2xl font-semibold sm:text-3xl">How it fits together</h3>
+              <h3 data-split className="mb-8 font-display text-3xl font-semibold tracking-tight sm:text-4xl">How it fits together</h3>
               <Architecture />
             </div>
 
             <div className="mt-24">
-              <h3 data-split className="mb-8 font-display text-2xl font-semibold sm:text-3xl">On the road: the sales-rep app</h3>
+              <h3 data-split className="mb-8 font-display text-3xl font-semibold tracking-tight sm:text-4xl">On the road: the sales-rep app</h3>
               <div data-reveal><Gallery mobile={koga.mobile} /></div>
             </div>
 
@@ -127,113 +132,123 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Projects */}
-        <section id="projects" className="mt-32 border-y border-line bg-panel/40">
-          <div className="mx-auto max-w-6xl px-4 py-28 sm:px-6">
-            <SectionTitle n="02" eyebrow="More work" title="Projects & client work">
-              Real products for real users — a university research platform and software for local businesses in Qaladze.
-            </SectionTitle>
-            <div className="grid gap-8">
-              {projects.map((p, i) => (
-                <article key={p.name} data-reveal className={`group grid grid-cols-1 gap-8 rounded-3xl border border-line bg-bg/60 p-6 transition duration-500 hover:border-accent/40 sm:p-10 [&>*]:min-w-0 ${p.shots && p.shots.every((x) => x.mobile) ? "lg:grid-cols-[1.1fr_1fr]" : ""}`}>
-                  <div>
-                    <div className="flex items-center gap-3">
-                      <span className="font-mono text-xs text-dim">0{i + 1}</span>
-                      <p className="text-xs font-medium uppercase tracking-wider text-accent-2">{p.kind}</p>
-                    </div>
-                    <h3 className="mt-3 font-display text-3xl font-semibold">{p.name}</h3>
-                    <p className="text-dim">{p.tagline} · <span className="text-sm">{p.period}</span></p>
-                    <p className="mt-5 leading-relaxed">{p.text}</p>
-                    {p.points.length > 0 && (
-                      <ul className="mt-5 space-y-2.5 text-sm text-dim">
-                        {p.points.map((pt) => <li key={pt} className="flex gap-2"><CheckCircle2 className="mt-0.5 size-4 shrink-0 text-accent" />{pt}</li>)}
-                      </ul>
-                    )}
-                    <div className="mt-6 flex flex-wrap gap-2">{p.tech.map((t) => <Tag key={t}>{t}</Tag>)}</div>
-                    {p.link && (
-                      <Magnetic>
-                        <a href={p.link.href} target="_blank" rel="noreferrer" className="mt-6 inline-flex items-center gap-1.5 rounded-full border border-accent/50 px-4 py-2 text-sm font-medium text-accent transition hover:bg-accent hover:text-white">
+        {/* 02 — Projects */}
+        <section id="projects" className="mx-auto max-w-6xl px-4 pt-32 sm:px-6">
+          <SectionTitle n="02" eyebrow="More work" title="Projects & client work">
+            Real products for real users — a university research platform and software for local businesses in Qaladze.
+          </SectionTitle>
+          <div>
+            {projects.map((p, i) => {
+              const phones = p.shots?.filter((x) => x.mobile) ?? [];
+              const screens = p.shots?.filter((x) => !x.mobile) ?? [];
+              return (
+                <article key={p.name} data-reveal className="border-t border-line py-12 first:border-t-0 first:pt-0">
+                  <div className={`grid grid-cols-1 gap-10 [&>*]:min-w-0 ${phones.length && !screens.length ? "lg:grid-cols-[1.2fr_1fr]" : ""}`}>
+                    <div className="max-w-3xl">
+                      <p className="label flex flex-wrap gap-x-4 gap-y-1 text-dim"><span className="text-accent">{two(i + 1)}</span><span>{p.kind}</span><span>{p.period}</span></p>
+                      <h3 className="mt-4 font-display text-4xl font-semibold tracking-[-0.03em] sm:text-5xl">{p.name}</h3>
+                      <p className="mt-2 text-lg text-dim">{p.tagline}</p>
+                      <p className="mt-6 text-lg leading-relaxed">{p.text}</p>
+                      {p.points.length > 0 && <ul className="mt-6 space-y-2.5 text-dim">{p.points.map((pt) => <Point key={pt}>{pt}</Point>)}</ul>}
+                      <div className="mt-7 flex flex-wrap gap-2">{p.tech.map((t) => <Tag key={t}>{t}</Tag>)}</div>
+                      {p.link && (
+                        <a href={p.link.href} target="_blank" rel="noreferrer" className="link mt-7 inline-flex items-center gap-1.5 font-medium">
                           {p.link.label} <ArrowUpRight className="size-4" />
                         </a>
-                      </Magnetic>
-                    )}
+                      )}
+                    </div>
+                    {p.shots && <Gallery desktop={screens} mobile={phones} />}
                   </div>
-                  {p.shots && <Gallery desktop={p.shots.filter((x) => !x.mobile)} mobile={p.shots.filter((x) => x.mobile)} />}
                 </article>
-              ))}
-            </div>
+              );
+            })}
           </div>
         </section>
 
-        {/* Skills */}
-        <section id="skills" className="mx-auto max-w-6xl px-4 py-28 sm:px-6">
+        {/* 03 — Skills */}
+        <section id="skills" className="mx-auto max-w-6xl px-4 pt-32 sm:px-6">
           <SectionTitle n="03" eyebrow="Toolbox" title="Skills">The tools I use every day to take a product from idea to production.</SectionTitle>
-          <div data-stagger className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <div data-stagger className="grid gap-x-10 sm:grid-cols-2 lg:grid-cols-4">
             {skills.map((s) => (
-              <div key={s.group} className="rounded-2xl border border-line bg-panel p-6 transition duration-500 hover:-translate-y-1 hover:border-accent/50">
-                <h3 className="font-display text-lg font-semibold">{s.group}</h3>
-                <ul className="mt-4 space-y-2 text-sm text-dim">{s.items.map((i) => <li key={i}>{i}</li>)}</ul>
+              <div key={s.group} className="border-t border-ink pb-10 pt-4">
+                <h3 className="font-display text-2xl font-semibold tracking-tight">{s.group}</h3>
+                <ul className="mt-5 text-dim">
+                  {s.items.map((i) => <li key={i} className="border-b border-line py-2">{i}</li>)}
+                </ul>
               </div>
             ))}
           </div>
         </section>
 
-        {/* About */}
-        <section id="about" className="border-t border-line bg-panel/40">
-          <div className="mx-auto grid max-w-6xl gap-12 px-4 py-28 sm:px-6 lg:grid-cols-2">
+        {/* 04 — About */}
+        <section id="about" className="mx-auto max-w-6xl px-4 pt-24 sm:px-6">
+          <SectionTitle n="04" eyebrow="About" title="Developer and store owner" />
+          <div className="grid gap-14 lg:grid-cols-[1.2fr_1fr]">
             <div>
-              <SectionTitle n="04" eyebrow="About" title="Developer and store owner" />
-              <div data-stagger className="space-y-4 text-lg leading-relaxed text-dim">
+              <div data-stagger className="space-y-5 text-lg leading-relaxed">
                 <p>I&apos;m a Computer Science graduate from Salahaddin University – Erbil, based in Qaladze. I build software for Kurdish-speaking businesses and users, and I care most about software that keeps working on a busy day, on a cheap phone, with a weak connection.</p>
-                <p>Because I run a store myself, I understand the people I build for — cashiers, warehouse staff and sales reps. Every feature in KOGA started as a real problem in the shop.</p>
-                <p>I work like a team even when I work alone: pull requests, automated tests on every change, and automatic deployment. Right now I&apos;m also learning AI / LLM integration and Python.</p>
+                <p className="text-dim">Because I run a store myself, I understand the people I build for — cashiers, warehouse staff and sales reps. Every feature in KOGA started as a real problem in the shop.</p>
+                <p className="text-dim">I work like a team even when I work alone: pull requests, automated tests on every change, and automatic deployment. Right now I&apos;m also learning AI / LLM integration and Python.</p>
               </div>
-              <div data-reveal className="mt-8">
-                <h3 className="mb-3 font-display font-semibold">Languages</h3>
-                <div className="flex flex-wrap gap-3">
-                  {languages.map((l) => <span key={l.name} className="rounded-full border border-line px-3 py-1 text-sm">{l.name} <span className="text-dim">· {l.level}</span></span>)}
-                </div>
-              </div>
+              <dl data-reveal className="mt-10 border-t border-line">
+                {languages.map((l) => (
+                  <div key={l.name} className="flex justify-between border-b border-line py-3">
+                    <dt>{l.name}</dt><dd className="text-dim">{l.level}</dd>
+                  </div>
+                ))}
+              </dl>
             </div>
-            <ol data-stagger className="relative mt-2 space-y-10 border-l border-line pl-8 lg:mt-28">
+            <ol data-stagger className="border-t border-ink">
               {timeline.map((t) => (
-                <li key={t.title} className="relative">
-                  <span className="absolute -left-[39px] top-1 size-3.5 rounded-full border-2 border-accent bg-bg shadow-[0_0_12px] shadow-accent/60" />
-                  <p className="text-sm text-accent-2">{t.when}</p>
-                  <h3 className="mt-1 text-lg font-semibold">{t.title}</h3>
-                  <p className="text-sm text-dim">{t.where}</p>
+                <li key={t.title} className="grid grid-cols-[7.5rem_1fr] gap-4 border-b border-line py-5">
+                  <p className="label pt-1 text-dim">{t.when}</p>
+                  <div>
+                    <h3 className="font-medium">{t.title}</h3>
+                    <p className="text-sm text-dim">{t.where}</p>
+                  </div>
                 </li>
               ))}
             </ol>
           </div>
         </section>
 
-        {/* Contact */}
-        <section id="contact" className="relative overflow-hidden">
-          <div data-parallax="0.25" className="absolute left-1/2 top-1/2 size-[40rem] -translate-x-1/2 rounded-full bg-accent/20 blur-[140px]" aria-hidden />
-          <div className="relative mx-auto max-w-6xl px-4 py-36 text-center sm:px-6">
-            <p data-reveal className="mb-3 font-display text-sm font-medium uppercase tracking-[.2em] text-accent-2">05 · Contact</p>
-            <h2 data-split className="mx-auto max-w-4xl font-display text-5xl font-semibold tracking-tight sm:text-7xl">Let&apos;s build something real.</h2>
-            <p data-reveal className="mx-auto mt-6 max-w-xl text-lg text-dim">I&apos;m looking for a full-stack or backend developer role — on-site in Kurdistan or remote. The fastest way to reach me is email or WhatsApp.</p>
-            <div data-stagger className="mt-12 flex flex-wrap justify-center gap-3">
-              <Magnetic><a href={`mailto:${profile.email}`} className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3.5 text-sm font-semibold text-white hover:brightness-110"><Mail className="size-4" /> {profile.email}</a></Magnetic>
-              <Magnetic><a href={profile.whatsapp} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full border border-line bg-panel px-6 py-3.5 text-sm font-semibold hover:border-accent"><MessageCircle className="size-4" /> WhatsApp</a></Magnetic>
-              <Magnetic><a href={profile.phoneHref} className="inline-flex items-center gap-2 rounded-full border border-line bg-panel px-6 py-3.5 text-sm font-semibold hover:border-accent"><Phone className="size-4" /> {profile.phone}</a></Magnetic>
+        {/* 05 — Contact */}
+        <section id="contact" className="mx-auto max-w-6xl px-4 pb-24 pt-32 sm:px-6">
+          <div className="border-t border-ink pt-5">
+            <p data-reveal className="label flex gap-4 text-dim"><span className="text-accent">05</span>Contact</p>
+            <h2 data-split className="mt-10 font-display text-[clamp(2.8rem,9vw,8rem)] font-semibold leading-[0.9] tracking-[-0.04em]">Let&apos;s build something real.</h2>
+            <p data-reveal className="mt-8 max-w-xl text-lg leading-relaxed text-dim">I&apos;m looking for a full-stack or backend developer role — on-site in Kurdistan or remote. The fastest way to reach me is email or WhatsApp.</p>
+            <div data-reveal className="mt-10">
+              <Magnetic strength={0.15}>
+                <a href={`mailto:${profile.email}`} className="link break-all font-display text-2xl font-semibold tracking-tight sm:text-4xl">{profile.email}</a>
+              </Magnetic>
             </div>
-            <div data-stagger className="mt-6 flex justify-center gap-3">
-              <Magnetic><a href={profile.linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn" className="block rounded-full border border-line p-3 text-dim hover:text-ink"><LinkedinIcon className="size-5" /></a></Magnetic>
-              <Magnetic><a href={profile.github} target="_blank" rel="noreferrer" aria-label="GitHub" className="block rounded-full border border-line p-3 text-dim hover:text-ink"><GithubIcon className="size-5" /></a></Magnetic>
-            </div>
+            <ul data-stagger className="mt-12 grid border-t border-line sm:grid-cols-2 lg:grid-cols-4">
+              {[
+                { label: "WhatsApp", value: profile.phone, href: profile.whatsapp, ext: true },
+                { label: "Phone", value: profile.phone, href: profile.phoneHref, ext: false },
+                { label: "LinkedIn", value: "lewan-hassan", href: profile.linkedin, ext: true },
+                { label: "GitHub", value: "lewan641", href: profile.github, ext: true },
+              ].map((c) => (
+                <li key={c.label} className="border-b border-line">
+                  <a href={c.href} {...(c.ext ? { target: "_blank", rel: "noreferrer" } : {})} className="group flex items-center justify-between gap-4 py-4 pr-4 transition-colors hover:text-accent">
+                    <span><span className="label block text-dim">{c.label}</span><span className="mt-1 block">{c.value}</span></span>
+                    <ArrowUpRight className="size-5 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
         </section>
       </main>
 
-      <footer className="border-t border-line">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 px-4 py-8 text-sm text-dim sm:flex-row sm:px-6">
-          <p>© {new Date().getFullYear()} {profile.name} · Built with Next.js, Tailwind & GSAP</p>
-          <p className="flex items-center gap-1.5"><MapPin className="size-4" />{profile.location}</p>
+      <footer className="border-t border-ink">
+        <div className="label mx-auto flex max-w-6xl flex-col justify-between gap-2 px-4 py-6 text-dim sm:flex-row sm:px-6">
+          <p>© {new Date().getFullYear()} {profile.name}</p>
+          <p>{profile.location}</p>
+          <p>Next.js · Tailwind · GSAP</p>
         </div>
       </footer>
-    </div>
+    </>
   );
 }

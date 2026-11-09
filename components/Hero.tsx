@@ -4,7 +4,7 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { SplitText } from "gsap/SplitText";
 import { useGSAP } from "@gsap/react";
-import { ArrowUpRight, Download } from "lucide-react";
+import { ArrowDownRight, Download } from "lucide-react";
 import { Magnetic } from "@/components/motion/Magnetic";
 import { profile, stats } from "@/lib/data";
 
@@ -25,8 +25,9 @@ const code: Tok[][] = [
   [["    return ", "k"], ["Ok", "f"], ["(sale);"]],
   [["}"]],
 ];
+// muted editor palette on the dark code block
 const color: Record<string, string> = {
-  c: "text-slate-500 italic", a: "text-amber-300", k: "text-fuchsia-400", t: "text-emerald-300", f: "text-sky-300", s: "text-orange-300",
+  c: "text-[#8a8577] italic", a: "text-[#d9a441]", k: "text-[#e2795a]", t: "text-[#9fbf8f]", f: "text-[#e9e4d6] font-medium", s: "text-[#d9a441]",
 };
 
 export function Hero() {
@@ -42,48 +43,30 @@ export function Hero() {
         const counter = { v: 0 };
         const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
 
-        // 1. intro loader: counts to 100, then wipes up
+        // 1. intro: counts to 100, then the sheet lifts
         tl.to(counter, {
-          v: 100, duration: 1.1, ease: "power2.inOut",
-          onUpdate: () => { const el = q("[data-loader-num]")[0]; if (el) el.textContent = String(Math.round(counter.v)); },
+          v: 100, duration: 1, ease: "power2.inOut",
+          onUpdate: () => { const el = q("[data-loader-num]")[0]; if (el) el.textContent = String(Math.round(counter.v)).padStart(3, "0"); },
         })
-          .to(q("[data-loader-bar]"), { scaleX: 1, duration: 1.1, ease: "power2.inOut" }, 0)
-          .to(q("[data-loader]"), { yPercent: -100, duration: 0.9, ease: "expo.inOut" }, "+=0.1")
-          // 2. hero content
-          .from(name.chars, { yPercent: 120, rotate: 8, duration: 1.1, stagger: 0.035 }, "-=0.45")
-          .from(q("[data-hero-fade]"), { y: 30, autoAlpha: 0, duration: 0.9, stagger: 0.1 }, "-=0.8")
-          .from(q("[data-terminal]"), { y: 60, rotateX: 18, autoAlpha: 0, duration: 1.2, transformPerspective: 900 }, "-=0.9")
-          // 3. code "types" itself line by line
+          .to(q("[data-loader-bar]"), { scaleX: 1, duration: 1, ease: "power2.inOut" }, 0)
+          .to(q("[data-loader]"), { yPercent: -100, duration: 0.8, ease: "expo.inOut" }, "+=0.1")
+          // 2. name rises letter by letter, then the rest
+          .from(name.chars, { yPercent: 110, duration: 1, stagger: 0.03 }, "-=0.4")
+          .from(q("[data-hero-rule]"), { scaleX: 0, duration: 1, ease: "power3.inOut" }, "-=0.8")
+          .from(q("[data-hero-fade]"), { y: 24, autoAlpha: 0, duration: 0.8, stagger: 0.08 }, "-=0.7")
+          .from(q("[data-terminal]"), { y: 40, autoAlpha: 0, duration: 0.9 }, "-=0.7")
+          // 3. the code types itself line by line
           .fromTo(q("[data-line]"), { clipPath: "inset(0 100% 0 0)" }, {
-            clipPath: "inset(0 0% 0 0)", duration: 0.45, ease: "steps(24)", stagger: 0.28,
-          }, "-=0.5")
-          .from(q("[data-ok]"), { autoAlpha: 0, y: 8, duration: 0.5 }, "+=0.1")
-          .from(q("[data-stat]"), { y: 30, autoAlpha: 0, duration: 0.8, stagger: 0.08 }, 2.2);
+            clipPath: "inset(0 0% 0 0)", duration: 0.4, ease: "steps(24)", stagger: 0.25,
+          }, "-=0.4")
+          .from(q("[data-ok]"), { autoAlpha: 0, duration: 0.4 }, "+=0.1")
+          .from(q("[data-stat]"), { y: 24, autoAlpha: 0, duration: 0.7, stagger: 0.07 }, 2);
 
         // stats count up as part of the intro
         q("[data-stat-num]").forEach((el: HTMLElement) => {
           const end = Number(el.dataset.to); const suf = el.dataset.suffix ?? ""; const o = { v: 0 };
-          tl.to(o, { v: end, duration: 1.8, ease: "power2.out", onUpdate: () => { el.textContent = Math.round(o.v).toLocaleString("en-US") + suf; } }, 2.3);
+          tl.to(o, { v: end, duration: 1.6, ease: "power2.out", onUpdate: () => { el.textContent = Math.round(o.v).toLocaleString("en-US") + suf; } }, 2.1);
         });
-
-        // floating orbs drift forever
-        q("[data-orb]").forEach((el: HTMLElement, i: number) => {
-          gsap.to(el, { x: "random(-60, 60)", y: "random(-40, 40)", duration: "random(6, 10)", repeat: -1, yoyo: true, ease: "sine.inOut", delay: i });
-        });
-      });
-
-      // spotlight follows the mouse
-      mm.add("(pointer: fine)", () => {
-        const el = root.current!;
-        const xTo = gsap.quickTo(el, "--mx", { duration: 0.6, ease: "power3" });
-        const yTo = gsap.quickTo(el, "--my", { duration: 0.6, ease: "power3" });
-        const move = (e: PointerEvent) => {
-          const r = el.getBoundingClientRect();
-          xTo(((e.clientX - r.left) / r.width) * 100);
-          yTo(((e.clientY - r.top) / r.height) * 100);
-        };
-        el.addEventListener("pointermove", move);
-        return () => el.removeEventListener("pointermove", move);
       });
 
       mm.add("(prefers-reduced-motion: reduce)", () => {
@@ -94,79 +77,73 @@ export function Hero() {
   );
 
   return (
-    <section ref={root} id="top" className="hero relative overflow-hidden" style={{ ["--mx" as string]: 70, ["--my" as string]: 20 }}>
-      {/* intro loader */}
-      <div data-loader className="fixed inset-0 z-[80] flex flex-col items-center justify-center gap-6 bg-bg">
-        <p className="font-display text-sm uppercase tracking-[.4em] text-dim">Lewan Hassan</p>
-        <p className="font-display text-7xl font-bold tabular-nums sm:text-8xl"><span data-loader-num>0</span><span className="text-accent">%</span></p>
-        <div className="h-px w-48 bg-line"><div data-loader-bar className="h-px origin-left scale-x-0 bg-gradient-to-r from-accent to-accent-2" /></div>
+    <section ref={root} id="top" className="relative">
+      {/* intro sheet */}
+      <div data-loader className="fixed inset-0 z-[80] flex flex-col justify-end bg-ink p-6 text-bg sm:p-10">
+        <div className="flex items-end justify-between">
+          <p className="label">Lewan Hassan — Portfolio</p>
+          <p className="font-display text-7xl font-semibold tabular-nums leading-none sm:text-9xl"><span data-loader-num>000</span></p>
+        </div>
+        <div className="mt-6 h-px w-full bg-bg/20"><div data-loader-bar className="h-px origin-left scale-x-0 bg-bg" /></div>
       </div>
 
-      <div className="spotlight absolute inset-0" aria-hidden />
-      <div className="grid-bg absolute inset-0" aria-hidden />
-      <div data-orb className="absolute -right-24 top-10 size-[28rem] rounded-full bg-accent/25 blur-[110px]" aria-hidden />
-      <div data-orb className="absolute -left-32 top-64 size-[22rem] rounded-full bg-accent-2/15 blur-[110px]" aria-hidden />
-
-      <div className="relative mx-auto grid max-w-6xl grid-cols-1 items-center gap-14 px-4 pb-20 pt-16 sm:px-6 sm:pt-24 lg:grid-cols-[1.15fr_1fr] [&>*]:min-w-0">
-        <div>
-          <p data-hero-fade className="mb-6 inline-flex items-center gap-2 rounded-full border border-line bg-panel/70 px-3 py-1 text-xs text-dim backdrop-blur">
-            <span className="relative flex size-2"><span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-75" /><span className="relative inline-flex size-2 rounded-full bg-emerald-400" /></span>
-            Open to full-stack & backend roles
-          </p>
-          <h1 data-hero-name className="font-display text-[clamp(3.2rem,9vw,6.5rem)] font-bold leading-[0.95] tracking-tight">
-            Lewan<br />Hassan
-          </h1>
-          <p data-hero-fade className="mt-5 font-display text-xl font-medium sm:text-2xl">
-            <span className="text-gradient">{profile.role}</span>
-            <span className="text-dim"> · {profile.stack}</span>
-          </p>
-          <p data-hero-fade className="mt-5 max-w-xl text-lg leading-relaxed text-dim">{profile.intro}</p>
-          <div data-hero-fade className="mt-8 flex flex-wrap gap-3">
-            <Magnetic>
-              <a href="#work" className="group inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3.5 text-sm font-semibold text-bg transition hover:bg-white">
-                See my work <ArrowUpRight className="size-4 transition group-hover:rotate-45" />
-              </a>
-            </Magnetic>
-            <Magnetic>
-              <a href={profile.cv} download className="inline-flex items-center gap-2 rounded-full border border-line bg-panel/80 px-6 py-3.5 text-sm font-semibold backdrop-blur transition hover:border-accent">
-                <Download className="size-4" /> Download CV
-              </a>
-            </Magnetic>
-          </div>
+      <div className="mx-auto max-w-6xl px-4 pb-16 pt-10 sm:px-6 sm:pt-16">
+        <div data-hero-fade className="label flex flex-wrap items-center justify-between gap-x-6 gap-y-2 text-dim">
+          <span>{profile.role} — {profile.stack}</span>
+          <span className="flex items-center gap-2 text-ink"><span className="size-2 bg-accent" />Open to full-stack &amp; backend roles</span>
         </div>
 
-        {/* code window */}
-        <div data-terminal className="relative">
-          <div className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-accent/30 via-transparent to-accent-2/20 blur-2xl" aria-hidden />
-          <div className="relative overflow-hidden rounded-2xl border border-line bg-[#0a0f1c]/90 shadow-2xl shadow-black/60 backdrop-blur">
-            <div className="flex items-center gap-2 border-b border-line px-4 py-3">
-              <span className="size-3 rounded-full bg-[#ff5f57]" /><span className="size-3 rounded-full bg-[#febc2e]" /><span className="size-3 rounded-full bg-[#28c840]" />
-              <span className="ml-3 font-mono text-xs text-dim">KOGA / SalesController.cs</span>
+        <h1 data-hero-name className="mt-6 whitespace-nowrap font-display text-[clamp(2.6rem,12.4vw,10.4rem)] font-semibold leading-[0.9] tracking-[-0.045em]">
+          Lewan Hassan
+        </h1>
+        <div data-hero-rule className="mt-8 h-px origin-left bg-ink" />
+
+        <div className="mt-10 grid grid-cols-1 gap-12 lg:grid-cols-[1fr_1.1fr] [&>*]:min-w-0">
+          <div>
+            <p data-hero-fade className="max-w-xl text-xl leading-relaxed sm:text-2xl sm:leading-relaxed">{profile.intro}</p>
+            <div data-hero-fade className="mt-9 flex flex-wrap gap-3">
+              <Magnetic>
+                <a href="#work" className="group inline-flex items-center gap-2 bg-ink px-6 py-3.5 text-sm font-medium text-bg transition-colors hover:bg-accent">
+                  See my work <ArrowDownRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:translate-y-0.5" />
+                </a>
+              </Magnetic>
+              <Magnetic>
+                <a href={profile.cv} download className="inline-flex items-center gap-2 border border-ink px-6 py-3.5 text-sm font-medium transition-colors hover:bg-ink hover:text-bg">
+                  <Download className="size-4" /> Download CV
+                </a>
+              </Magnetic>
             </div>
-            <pre className="overflow-x-auto p-5 font-mono text-[11.5px] leading-[1.75] sm:text-[12.5px]">
+          </div>
+
+          {/* code block */}
+          <figure data-terminal className="bg-code text-[#e9e4d6]">
+            <figcaption className="label flex items-center justify-between border-b border-white/10 px-5 py-3 text-[#8a8577]">
+              <span>KOGA / SalesController.cs</span><span>C#</span>
+            </figcaption>
+            <pre className="overflow-x-auto p-5 font-mono text-[11.5px] leading-[1.8] sm:text-[12.5px]">
               {code.map((line, i) => (
                 <div key={i} data-line className="whitespace-pre">
-                  <span className="mr-4 inline-block w-4 select-none text-right text-slate-600">{i + 1}</span>
-                  {line.map(([t, c], j) => <span key={j} className={c ? color[c] : "text-slate-200"}>{t}</span>)}
+                  <span className="mr-4 inline-block w-4 select-none text-right text-[#5f5b52]">{i + 1}</span>
+                  {line.map(([t, c], j) => <span key={j} className={c ? color[c] : ""}>{t}</span>)}
                 </div>
               ))}
             </pre>
-            <div data-ok className="flex items-center gap-2 border-t border-line bg-emerald-500/5 px-5 py-2.5 font-mono text-xs text-emerald-300">
+            <p data-ok className="border-t border-white/10 px-5 py-3 font-mono text-xs text-[#9fbf8f]">
               ✓ 53 API suites · 52 E2E suites passed
-            </div>
-          </div>
+            </p>
+          </figure>
         </div>
 
         {/* stats */}
-        <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-4 lg:col-span-2">
-          {stats.map((s) => {
+        <dl className="mt-16 grid grid-cols-2 border-t border-ink sm:grid-cols-4">
+          {stats.map((s, i) => {
             const n = Number(s.value.replace(/[^\d]/g, ""));
             const suffix = s.value.replace(/[\d,]/g, "");
             return (
-              <div key={s.label} data-stat className="bg-panel/90 p-5 backdrop-blur">
+              <div key={s.label} data-stat className={`border-b border-line py-6 pr-4 sm:border-b-0 ${i % 2 ? "pl-4 sm:pl-6" : "sm:pl-6"} ${i ? "sm:border-l sm:border-line" : "sm:pl-0"} ${i % 2 ? "border-l border-line" : ""}`}>
                 <dt className="sr-only">{s.label}</dt>
-                <dd className="font-display text-3xl font-semibold sm:text-4xl" data-stat-num data-to={n} data-suffix={suffix}>{s.value}</dd>
-                <dd className="mt-1 text-sm text-dim">{s.label}</dd>
+                <dd className="font-display text-5xl font-semibold tracking-tight sm:text-6xl" data-stat-num data-to={n} data-suffix={suffix}>{s.value}</dd>
+                <dd className="mt-2 text-sm text-dim">{s.label}</dd>
               </div>
             );
           })}

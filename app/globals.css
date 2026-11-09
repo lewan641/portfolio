@@ -1,56 +1,48 @@
 @import "tailwindcss";
 
+/*
+  Design rules for this site (keep them when editing):
+  - flat colours only: paper, ink and ONE accent. No gradients, glows, blurs or drop shadows.
+  - structure comes from type size and thin rules, not from rounded cards.
+  - square corners everywhere except phone mock-ups.
+*/
 @theme {
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-rubik), var(--font-inter), ui-sans-serif, sans-serif;
-  --color-bg: #070a13;
-  --color-panel: #0e1322;
-  --color-line: #1d2538;
-  --color-ink: #e8ecf5;
-  --color-dim: #94a0b8;
-  --color-accent: #6d72ff;
-  --color-accent-2: #22d3ee;
+  --font-sans: var(--font-plex), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-bricolage), var(--font-plex), ui-sans-serif, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --color-bg: #f2efe6;      /* paper */
+  --color-panel: #faf8f2;   /* lighter paper for blocks */
+  --color-line: #cdc7b8;    /* thin rules */
+  --color-ink: #171614;
+  --color-dim: #5f5b52;
+  --color-accent: #c8370f;  /* the only colour */
+  --color-code: #171614;    /* code block background */
 }
 
 html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
 body { background: var(--color-bg); color: var(--color-ink); }
-::selection { background: color-mix(in oklab, var(--color-accent) 45%, transparent); }
-
-.glow {
-  background:
-    radial-gradient(60rem 30rem at 85% -10%, color-mix(in oklab, var(--color-accent) 22%, transparent), transparent 70%),
-    radial-gradient(40rem 24rem at -10% 20%, color-mix(in oklab, var(--color-accent-2) 12%, transparent), transparent 70%);
-}
-.grid-bg {
-  background-image:
-    linear-gradient(to right, rgb(255 255 255 / .035) 1px, transparent 1px),
-    linear-gradient(to bottom, rgb(255 255 255 / .035) 1px, transparent 1px);
-  background-size: 48px 48px;
-  mask-image: radial-gradient(ellipse at top, black 30%, transparent 75%);
-}
-.text-gradient {
-  background: linear-gradient(90deg, #a5a8ff, #22d3ee);
-  -webkit-background-clip: text; background-clip: text; color: transparent;
-}
+::selection { background: var(--color-ink); color: var(--color-bg); }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 
-/* hero spotlight that follows the mouse (--mx/--my set by GSAP, in %) */
-.hero .spotlight {
-  background: radial-gradient(38rem 26rem at calc(var(--mx) * 1%) calc(var(--my) * 1%),
-    color-mix(in oklab, var(--color-accent) 20%, transparent), transparent 70%);
+/* small uppercase mono label used for section numbers, dates and captions */
+.label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
-/* custom cursor replaces the system one on mouse devices */
-.has-cursor, .has-cursor a, .has-cursor button { cursor: none; }
+/* text link with an underline that thickens on hover */
+.link {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+  transition: color .2s, text-decoration-color .2s;
+}
+.link:hover { color: var(--color-accent); }
 
 /* tech marquee */
 @keyframes marquee { to { transform: translateX(-100%); } }
-.marquee-track { animation: marquee 38s linear infinite; }
+.marquee-track { animation: marquee 40s linear infinite; }
 .marquee:hover .marquee-track { animation-play-state: paused; }
 @media (prefers-reduced-motion: reduce) { .marquee-track { animation: none; } }
-
-/* subtle film grain over the whole page */
-.grain::after {
-  content: ""; position: fixed; inset: -50%; z-index: 55; pointer-events: none; opacity: .045;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}

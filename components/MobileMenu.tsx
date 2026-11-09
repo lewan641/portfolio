@@ -23,16 +23,16 @@ export function MobileMenu({ items }: { items: { href: string; label: string }[]
 
   return (
     <>
-      <button aria-label="Open menu" aria-expanded={open} onClick={() => setOpen(true)} className="rounded-full border border-line p-2.5 text-ink md:hidden">
+      <button aria-label="Open menu" aria-expanded={open} onClick={() => setOpen(true)} className="border border-ink p-2 md:hidden">
         <Menu className="size-5" />
       </button>
       {mounted && open && createPortal(
-        <div className="fixed inset-0 z-[95] flex flex-col bg-bg/97 px-6 pb-10 pt-[max(1rem,env(safe-area-inset-top))] backdrop-blur-md md:hidden" role="dialog" aria-modal="true" aria-label="Menu">
+        <div className="fixed inset-0 z-[95] flex flex-col bg-bg px-4 pb-10 pt-[max(0.5rem,env(safe-area-inset-top))] md:hidden" role="dialog" aria-modal="true" aria-label="Menu">
           <div className="flex h-12 items-center justify-between">
-            <span className="font-display text-lg font-semibold">lewan<span className="text-accent">.</span>dev</span>
-            <button aria-label="Close menu" onClick={() => setOpen(false)} className="rounded-full border border-line p-2.5"><X className="size-5" /></button>
+            <span className="font-display text-lg font-semibold tracking-tight">Lewan Hassan</span>
+            <button aria-label="Close menu" onClick={() => setOpen(false)} className="border border-ink p-2"><X className="size-5" /></button>
           </div>
-          <nav className="mt-10 flex flex-col gap-2">
+          <nav className="mt-10 flex flex-col border-t border-ink">
             {items.map((n, i) => (
               <a key={n.href} href={n.href} onClick={(e) => {
                   // close first (unlocks page scroll), then jump to the section
@@ -42,8 +42,8 @@ export function MobileMenu({ items }: { items: { href: string; label: string }[]
                     document.querySelector(n.href)?.scrollIntoView({ behavior: "smooth" });
                     history.replaceState(null, "", n.href);
                   }, 30);
-                }} className="flex items-baseline gap-4 border-b border-line py-4 font-display text-3xl font-semibold">
-                <span className="font-mono text-xs text-dim">0{i + 1}</span>{n.label}
+                }} className="flex items-baseline gap-4 border-b border-line py-5 font-display text-4xl font-semibold tracking-tight">
+                <span className="label text-accent">0{i + 1}</span>{n.label}
               </a>
             ))}
           </nav>
