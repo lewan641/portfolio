@@ -227,7 +227,17 @@ export default function Home() {
         {/* 04 — About */}
         <section id="about" className="mx-auto max-w-6xl px-4 pt-32 sm:px-6">
           <SectionTitle n="04" eyebrow="About" title="Developer and store owner" />
-          <div className="grid gap-14 lg:grid-cols-[1.2fr_1fr]">
+          <div className="grid gap-x-14 gap-y-10 lg:grid-cols-[0.8fr_1.2fr]">
+            {/* portrait: tinted to the site's greens, real colours on hover / tap / keyboard focus */}
+            <figure data-reveal className="group max-w-sm lg:max-w-none" tabIndex={0}>
+              <div className="relative overflow-hidden rounded-[2rem] border border-line bg-panel">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/lewan-green.webp" alt="Lewan Hassan, smiling, leaning on a railing by the water at sunset" width={880} height={1092} loading="lazy" className="block h-auto w-full" />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/lewan.webp" alt="" aria-hidden width={880} height={1092} loading="lazy" className="absolute inset-0 block size-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100 group-focus:opacity-100" />
+              </div>
+              <figcaption className="label mt-3 flex justify-between text-dim"><span>Lewan Hassan</span><span className="hidden [@media(hover:hover)]:inline">Hover for colour</span><span className="[@media(hover:hover)]:hidden">Tap for colour</span></figcaption>
+            </figure>
             <div>
               <div data-stagger className="space-y-5 text-lg leading-relaxed">
                 <p>I&apos;m a Computer Science graduate from Salahaddin University – Erbil, based in Qaladze. I build software for Kurdish-speaking businesses and users, and I care most about software that keeps working on a busy day, on a cheap phone, with a weak connection.</p>
@@ -242,16 +252,16 @@ export default function Home() {
                 ))}
               </dl>
             </div>
-            <ol data-stagger className="grid content-start gap-3">
-              {timeline.map((t) => (
-                <li key={t.title} className="rounded-3xl bg-panel p-6">
-                  <p className="label text-dim">{t.when}</p>
-                  <h3 className="mt-2 text-lg font-medium">{t.title}</h3>
-                  <p className="text-sm text-dim">{t.where}</p>
-                </li>
-              ))}
-            </ol>
           </div>
+          <ol data-stagger className="mt-14 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {timeline.map((t) => (
+              <li key={t.title} className="rounded-3xl bg-panel p-6">
+                <p className="label text-dim">{t.when}</p>
+                <h3 className="mt-3 text-lg font-medium leading-snug">{t.title}</h3>
+                <p className="mt-1 text-sm text-dim">{t.where}</p>
+              </li>
+            ))}
+          </ol>
         </section>
 
         {/* 05 — Contact */}
