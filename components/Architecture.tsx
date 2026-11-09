@@ -56,21 +56,21 @@ export function Architecture() {
   );
 
   return (
-    <div ref={root} className="border border-ink bg-panel p-4 sm:p-8">
+    <div ref={root} className="rounded-3xl border border-line bg-panel p-4 sm:p-8">
       <div className="overflow-x-auto">
         <svg viewBox="0 0 920 300" className="min-w-[720px]" role="img" aria-label="KOGA architecture: POS and sales-rep app write to an offline queue, which syncs to the ASP.NET Core API, which stores data in PostgreSQL and sends Telegram alerts.">
           {links.map(([a, b]) => (
             <g key={a + b}>
               <path d={path(a, b)} fill="none" stroke="var(--color-line)" strokeWidth="1.5" />
-              <path data-wire d={path(a, b)} fill="none" stroke="var(--color-ink)" strokeWidth="1.5" />
+              <path data-wire d={path(a, b)} fill="none" stroke="var(--color-dim)" strokeWidth="1.5" />
             </g>
           ))}
-          {links.map((_, i) => <rect key={i} data-packet x="-4" y="-4" width="8" height="8" fill="var(--color-accent)" opacity="0" />)}
+          {links.map((_, i) => <rect key={i} data-packet x="-4" y="-4" width="8" height="8" rx="4" fill="var(--color-ink)" opacity="0" />)}
           {nodes.map((n) => {
             const Icon = n.icon;
             return (
               <g key={n.id} data-node>
-                <rect x={n.x - 70} y={n.y - 34} width="140" height="68" fill="var(--color-bg)" stroke="var(--color-ink)" strokeWidth="1.5" />
+                <rect x={n.x - 70} y={n.y - 34} width="140" height="68" rx="18" fill="var(--color-raised)" stroke="var(--color-line)" strokeWidth="1.5" />
                 <foreignObject x={n.x - 64} y={n.y - 28} width="128" height="56">
                   <div className="flex h-full flex-col items-center justify-center text-center leading-tight">
                     <Icon className="mb-1 size-4" strokeWidth={1.75} />

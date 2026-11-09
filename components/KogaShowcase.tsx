@@ -60,13 +60,13 @@ export function KogaShowcase({ shots }: { shots: Shot[] }) {
         {shots.map((s, i) => (
           <figure key={s.src} data-card className="w-[85vw] shrink-0 sm:w-[60vw] lg:w-[min(62vw,860px)]">
             <figcaption className="label mb-3 flex justify-between text-dim">
-              <span><span className="text-accent">{String(i + 1).padStart(2, "0")}</span> / {String(shots.length).padStart(2, "0")}</span>
+              <span><span className="text-ink">{String(i + 1).padStart(2, "0")}</span> / {String(shots.length).padStart(2, "0")}</span>
               <span className="hidden sm:inline">Click to enlarge</span>
             </figcaption>
-            <button onClick={() => setOpen(i)} className="group relative block w-full overflow-hidden border border-ink text-left">
+            <button onClick={() => setOpen(i)} className="group relative block w-full overflow-hidden rounded-3xl border border-line text-left">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={s.src} alt={s.alt} {...dims(s.src)} loading="lazy" className="block aspect-[16/10] w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.02]" />
-              <span className="absolute bottom-0 right-0 bg-ink p-2.5 text-bg opacity-0 transition-opacity group-hover:opacity-100">
+              <span className="absolute bottom-4 right-4 rounded-full bg-ink p-2.5 text-bg opacity-0 transition-opacity group-hover:opacity-100">
                 <Maximize2 className="size-4" />
               </span>
             </button>
@@ -75,7 +75,7 @@ export function KogaShowcase({ shots }: { shots: Shot[] }) {
         ))}
       </div>
       <div className="mx-auto mt-4 hidden h-px w-full max-w-6xl bg-line lg:block">
-        <div data-progress className="h-[3px] origin-left scale-x-0 bg-ink" />
+        <div data-progress className="h-[3px] origin-left scale-x-0 rounded-full bg-dim" />
       </div>
 
       <Lightbox shots={shots} index={open} onClose={() => setOpen(null)} />

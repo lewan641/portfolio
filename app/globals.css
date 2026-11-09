@@ -2,27 +2,36 @@
 
 /*
   Design rules for this site (keep them when editing):
-  - flat colours only: paper, ink and ONE accent. No gradients, glows, blurs or drop shadows.
-  - structure comes from type size and thin rules, not from rounded cards.
-  - square corners everywhere except phone mock-ups.
+  - one family of greens, six steps from deep to mint. Nothing outside it.
+  - depth comes from TONE: each layer is one step lighter than the layer under it
+    (bg → panel → raised → line). No gradients, glows, blurs or drop shadows.
+  - shapes echo the palette card: pills for small things, large soft corners for blocks.
 */
 @theme {
   --font-sans: var(--font-plex), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-bricolage), var(--font-plex), ui-sans-serif, sans-serif;
   --font-mono: var(--font-plex-mono), ui-monospace, "SFMono-Regular", Menlo, monospace;
-  --color-bg: #f2efe6;      /* paper */
-  --color-panel: #faf8f2;   /* lighter paper for blocks */
-  --color-line: #cdc7b8;    /* thin rules */
-  --color-ink: #171614;
-  --color-dim: #5f5b52;
-  --color-accent: #c8370f;  /* the only colour */
-  --color-code: #171614;    /* code block background */
+  --color-bg: #051f20;      /* 1 · page */
+  --color-panel: #0b2b26;   /* 2 · blocks */
+  --color-raised: #163832;  /* 3 · things on blocks */
+  --color-line: #235347;    /* 4 · rules and borders */
+  --color-dim: #8eb69b;     /* 5 · secondary text */
+  --color-ink: #daf1de;     /* 6 · text */
+  --color-accent: #daf1de;
 }
 
-html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
+html { scroll-behavior: smooth; scroll-padding-top: 5rem; background: var(--color-bg); }
 body { background: var(--color-bg); color: var(--color-ink); }
 ::selection { background: var(--color-ink); color: var(--color-bg); }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+/* scrollbar in the same greens */
+html { scrollbar-color: var(--color-line) var(--color-bg); }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--color-bg); }
+::-webkit-scrollbar-thumb { background: var(--color-line); border-radius: 999px; border: 2px solid var(--color-bg); }
+
+:focus-visible { outline: 2px solid var(--color-ink); outline-offset: 3px; }
 
 /* small uppercase mono label used for section numbers, dates and captions */
 .label {
@@ -32,17 +41,23 @@ body { background: var(--color-bg); color: var(--color-ink); }
   text-transform: uppercase;
 }
 
-/* text link with an underline that thickens on hover */
+/* text link with an underline */
 .link {
   text-decoration: underline;
+  text-decoration-color: var(--color-line);
   text-decoration-thickness: 1px;
   text-underline-offset: 0.22em;
-  transition: color .2s, text-decoration-color .2s;
+  transition: text-decoration-color .2s;
 }
-.link:hover { color: var(--color-accent); }
+.link:hover { text-decoration-color: var(--color-ink); }
 
 /* tech marquee */
 @keyframes marquee { to { transform: translateX(-100%); } }
 .marquee-track { animation: marquee 40s linear infinite; }
 .marquee:hover .marquee-track { animation-play-state: paused; }
-@media (prefers-reduced-motion: reduce) { .marquee-track { animation: none; } }
+
+/* new item appearing in the offline demo */
+@keyframes pop { from { opacity: 0; transform: translateY(6px) scale(.96); } }
+.pop { animation: pop .35s cubic-bezier(.2,.8,.2,1); }
+
+@media (prefers-reduced-motion: reduce) { .marquee-track, .pop { animation: none; } }

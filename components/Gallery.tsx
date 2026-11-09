@@ -21,14 +21,14 @@ export function Gallery({ desktop = [], mobile = [] }: { desktop?: Shot[]; mobil
   return (
     <div className="min-w-0">
       {tabs.length > 1 && (
-        <div className="label mb-5 inline-flex border border-ink" role="tablist">
+        <div className="label mb-5 inline-flex rounded-full border border-line p-1" role="tablist">
           {tabs.map((t, i) => (
             <button
               key={t.key}
               role="tab"
               aria-selected={i === tab}
               onClick={() => setTab(i)}
-              className={`px-4 py-2 transition-colors ${i === tab ? "bg-ink text-bg" : "hover:text-accent"}`}
+              className={`rounded-full px-4 py-2 transition-colors ${i === tab ? "bg-ink text-bg" : "text-dim hover:text-ink"}`}
             >
               {t.label}
             </button>
@@ -40,11 +40,11 @@ export function Gallery({ desktop = [], mobile = [] }: { desktop?: Shot[]; mobil
         <div className="-mx-4 flex snap-x snap-mandatory items-start gap-4 overflow-x-auto px-4 pb-3 [scrollbar-width:none] sm:mx-0 sm:gap-6 sm:px-0">
           {shots.map((s, i) => (
             <button key={s.src} onClick={() => setOpen(i)} className="group w-[62vw] max-w-[230px] shrink-0 snap-start text-left sm:w-[230px]">
-              <div className="overflow-hidden rounded-[1.6rem] border-[5px] border-ink bg-ink transition-transform duration-300 group-hover:-translate-y-1">
+              <div className="overflow-hidden rounded-[1.8rem] border-[5px] border-line bg-line transition-transform duration-300 group-hover:-translate-y-1">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={s.src} alt={s.alt} {...dims(s.src)} loading="lazy" className="block h-auto w-full" />
               </div>
-              <p className="mt-3 text-sm leading-snug text-dim"><span className="label mr-2 text-accent">{two(i + 1)}</span>{s.alt}</p>
+              <p className="mt-3 text-sm leading-snug text-dim"><span className="label mr-2 text-ink">{two(i + 1)}</span>{s.alt}</p>
             </button>
           ))}
         </div>
@@ -52,11 +52,11 @@ export function Gallery({ desktop = [], mobile = [] }: { desktop?: Shot[]; mobil
         <div className="grid gap-x-6 gap-y-8 sm:grid-cols-2">
           {shots.map((s, i) => (
             <button key={s.src} onClick={() => setOpen(i)} className={`group text-left ${i === 0 ? "sm:col-span-2" : ""}`}>
-              <div className="overflow-hidden border border-ink">
+              <div className="overflow-hidden rounded-2xl border border-line">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={s.src} alt={s.alt} {...dims(s.src)} loading="lazy" className="block aspect-[16/10] w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.02]" />
               </div>
-              <p className="mt-3 text-sm leading-snug text-dim"><span className="label mr-2 text-accent">{two(i + 1)}</span>{s.alt}</p>
+              <p className="mt-3 text-sm leading-snug text-dim"><span className="label mr-2 text-ink">{two(i + 1)}</span>{s.alt}</p>
             </button>
           ))}
         </div>

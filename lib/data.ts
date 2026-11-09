@@ -82,6 +82,33 @@ export const koga = {
     { src: "/shots/koga-m-analysis.webp", alt: "Sales rep weekly analysis compared to the previous week", mobile: true },
   ] as Shot[],
   note: "Screenshots use demo data — the real store's data is private.",
+  // Short engineering notes. Each one is a real decision in the KOGA codebase.
+  notes: [
+    {
+      title: "A sale can arrive twice",
+      problem: "The till loses its connection halfway through a request. Did the sale reach the server or not? Sending it again risks charging the customer twice; not sending it risks losing the sale.",
+      answer: "Every operation is given a unique id on the device before it is sent. The API writes that id to an operation log in the same transaction as the sale. A repeated request finds its id in the log and gets the saved answer back, so retrying is always safe.",
+      code: "var cached = await _idempotency.CheckOperationAsync(dto.OperationId);\nif (cached != null) return Ok(cached);",
+    },
+    {
+      title: "One carton, twelve packs, sixty pieces",
+      problem: "The same product is bought by the carton, stocked by the pack and sold by the piece, at a different price each time. Storing three separate stock numbers means they drift apart.",
+      answer: "Stock is stored once, in the smallest unit. Each product only says how many pieces are in a pack and how many packs are in a carton; every screen converts on the way in and out. An order for 2 cartons is saved as 120 pieces.",
+      code: "pieces = cartons × ParchaPerKarton × UnitsPerParcha",
+    },
+    {
+      title: "Every test suite gets its own database",
+      problem: "Mocked tests pass while the real query fails. Tests that share one database break each other depending on the order they run in.",
+      answer: "The test runner builds a template database once from the real migrations, then gives each of the 53 suites a fresh copy of it and a freshly started API. No mocks. It also refuses to run against anything that is not a local database whose name ends in _test.",
+      code: 'create database "koga_test" template "koga_test_template"',
+    },
+    {
+      title: "A migration that already ran is frozen",
+      problem: "Editing an old migration works on a clean test database, but the store's real database has already applied it and will never run it again. Tests go green and the shop breaks.",
+      answer: "Before any test runs, the script compares the migrations with the main branch and stops if one that is already released was changed. A change to the schema has to be a new migration.",
+      code: "these migrations are already on main and were changed:\nput the change in a new migration instead",
+    },
+  ],
 };
 
 export type Project = {
