@@ -303,8 +303,8 @@ export default function Home() {
           <p>Designed &amp; built in Qaladze</p>
           <a href="#top" className="inline-flex items-center gap-2 text-ink transition-colors hover:text-dim">Back to top <ArrowUp className="size-3.5" /></a>
         </div>
-        {/* the name once more, one tone above the page */}
-        <p aria-hidden className="select-none whitespace-nowrap text-center font-display text-[14.4vw] font-semibold leading-[0.8] tracking-[-0.05em] text-panel">Lewan Hassan</p>
+        {/* the name once more, in the text colour: mint on the dark theme, deep green on the light one */}
+        <p aria-hidden className="mt-4 select-none whitespace-nowrap text-center font-display text-[14.4vw] font-semibold leading-[0.92] tracking-[-0.05em] text-ink">Lewan Hassan</p>
       </footer>
     </>
   );
