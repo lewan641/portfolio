@@ -42,7 +42,7 @@ export function Lightbox({ shots, index, onClose }: { shots: Shot[]; index: numb
 
   return createPortal(
     <div
-      className="fixed inset-0 z-[100] flex flex-col bg-[#031213]"
+      className="theme-dark fixed inset-0 z-[100] flex flex-col bg-[#031213] text-ink"
       role="dialog"
       aria-modal="true"
       aria-label={s.alt}

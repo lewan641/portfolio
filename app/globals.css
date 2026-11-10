@@ -3,14 +3,16 @@
 /*
   Design rules for this site (keep them when editing):
   - one family of greens, six steps from deep to mint. Nothing outside it.
-  - depth comes from TONE: each layer is one step lighter than the layer under it
+  - depth comes from TONE: each layer is one step away from the layer under it
     (bg → panel → raised → line). No gradients, glows, blurs or drop shadows.
+  - never hard-code a colour in a component: use the tokens, so both themes work.
   - shapes echo the palette card: pills for small things, large soft corners for blocks.
 */
 @theme {
   --font-sans: var(--font-plex), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-bricolage), var(--font-plex), ui-sans-serif, sans-serif;
   --font-mono: var(--font-plex-mono), ui-monospace, "SFMono-Regular", Menlo, monospace;
+  /* dark theme (default). The six palette colours, deep → mint. */
   --color-bg: #051f20;      /* 1 · page */
   --color-panel: #0b2b26;   /* 2 · blocks */
   --color-raised: #163832;  /* 3 · things on blocks */
@@ -18,10 +20,39 @@
   --color-dim: #8eb69b;     /* 5 · secondary text */
   --color-ink: #daf1de;     /* 6 · text */
   --color-accent: #daf1de;
+  --color-code-fg: #b9dcc3;   /* plain code */
+  --color-code-dim: #4f7f6c;  /* code comments */
+}
+
+/*
+  Themes. Dark is the default above. Light uses the SAME six colours turned round:
+  the page is mint and each layer steps one tone DARKER instead of lighter.
+  - follows the system setting unless the visitor picked one (data-theme on <html>)
+  - .theme-dark forces the dark set on one element (the image viewer is always dark)
+*/
+.theme-dark {
+  --color-bg: #051f20; --color-panel: #0b2b26; --color-raised: #163832; --color-line: #235347;
+  --color-dim: #8eb69b; --color-ink: #daf1de; --color-accent: #daf1de;
+  --color-code-fg: #b9dcc3; --color-code-dim: #4f7f6c;
+}
+:root { color-scheme: dark; }
+:root[data-theme="light"] {
+  color-scheme: light;
+  --color-bg: #daf1de; --color-panel: #c9e6cf; --color-raised: #b7d8be; --color-line: #8eb69b;
+  --color-dim: #235347; --color-ink: #051f20; --color-accent: #051f20;
+  --color-code-fg: #163832; --color-code-dim: #4a7a67;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    color-scheme: light;
+    --color-bg: #daf1de; --color-panel: #c9e6cf; --color-raised: #b7d8be; --color-line: #8eb69b;
+    --color-dim: #235347; --color-ink: #051f20; --color-accent: #051f20;
+    --color-code-fg: #163832; --color-code-dim: #4a7a67;
+  }
 }
 
 html { scroll-behavior: smooth; scroll-padding-top: 5rem; background: var(--color-bg); }
-body { background: var(--color-bg); color: var(--color-ink); }
+body { background: var(--color-bg); color: var(--color-ink); transition: background-color .3s, color .3s; }
 ::selection { background: var(--color-ink); color: var(--color-bg); }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 

@@ -27,14 +27,14 @@ const code: Tok[][] = [
 ];
 // syntax colours stay inside the green family
 const color: Record<string, string> = {
-  c: "text-[#4f7f6c] italic", a: "text-dim", k: "text-dim", t: "text-ink", f: "text-ink font-medium", s: "text-[#b9dcc3]",
+  c: "text-code-dim italic", a: "text-dim", k: "text-dim", t: "text-ink", f: "text-ink font-medium", s: "text-code-fg",
 };
 
 // the four stats sit on stacked plates, each one tone lighter than the one under it
 const plates = [
   "bg-panel border-line text-ink",
   "bg-raised border-line text-ink",
-  "bg-line border-[#2f6a5b] text-ink",
+  "bg-line border-dim text-ink",
   "bg-dim border-dim text-bg",
 ];
 
@@ -167,7 +167,7 @@ export function Hero() {
               {code.map((line, i) => (
                 <div key={i} data-line className="whitespace-pre">
                   <span className="mr-4 inline-block w-4 select-none text-right text-line">{i + 1}</span>
-                  {line.map(([t, c], j) => <span key={j} className={c ? color[c] : "text-[#b9dcc3]"}>{t}</span>)}
+                  {line.map(([t, c], j) => <span key={j} className={c ? color[c] : "text-code-fg"}>{t}</span>)}
                 </div>
               ))}
             </pre>

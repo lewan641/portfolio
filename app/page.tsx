@@ -8,6 +8,7 @@ import { Marquee } from "@/components/Marquee";
 import { Motion } from "@/components/motion/Motion";
 import { Magnetic } from "@/components/motion/Magnetic";
 import { MobileMenu } from "@/components/MobileMenu";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { koga, languages, profile, projects, skills, timeline } from "@/lib/data";
 
 const nav = [
@@ -69,6 +70,7 @@ export default function Home() {
             {nav.map((n) => <a key={n.href} href={n.href} className="transition-colors hover:text-ink">{n.label}</a>)}
           </nav>
           <div className="flex items-center gap-2">
+            <ThemeToggle />
             <a href={profile.cv} download className="label inline-flex items-center gap-2 rounded-full bg-ink px-4 py-2.5 text-bg transition-colors hover:bg-dim">
               <Download className="size-3.5" /> CV
             </a>
