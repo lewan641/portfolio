@@ -1,6 +1,6 @@
 "use client";
 
-import { useSyncExternalStore } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 import { Monitor, Moon, Sun } from "lucide-react";
 
 type Choice = "system" | "light" | "dark";
@@ -27,11 +27,25 @@ const subscribe = (onChange: () => void) => {
   };
 };
 
+const BAR = { light: "#daf1de", dark: "#051f20" }; // page colours, for the browser's own bars
+
+/**
+ * Keeps <meta name="theme-color"> in step with the theme. The two tags from app/layout.tsx follow
+ * the SYSTEM setting; when the visitor forces a theme, both are set to that theme's page colour.
+ */
+function syncBars(choice: Choice) {
+  document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]').forEach((m) => {
+    const system = (m.media || "").includes("light") ? BAR.light : BAR.dark;
+    m.content = choice === "system" ? system : BAR[choice];
+  });
+}
+
 /** Applies a choice to <html>. app/layout.tsx runs the same logic inline before first paint. */
 function apply(choice: Choice) {
   const root = document.documentElement;
   if (choice === "system") root.removeAttribute("data-theme");
   else root.setAttribute("data-theme", choice);
+  syncBars(choice);
   try {
     if (choice === "system") localStorage.removeItem(KEY);
     else localStorage.setItem(KEY, choice);
@@ -43,6 +57,8 @@ function apply(choice: Choice) {
 export function ThemeToggle() {
   const choice = useSyncExternalStore(subscribe, read, () => "system" as Choice);
   const next = order[(order.indexOf(choice) + 1) % order.length];
+  // a theme chosen on an earlier visit: colour the browser bars for it too
+  useEffect(() => syncBars(choice), [choice]);
   const Icon = choice === "light" ? Sun : choice === "dark" ? Moon : Monitor;
 
   return (

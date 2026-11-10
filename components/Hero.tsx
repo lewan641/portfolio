@@ -71,6 +71,10 @@ export function Hero() {
         })
           .to(q("[data-loader-bar]"), { scaleX: 1, duration: 1, ease: "power2.inOut" }, 0)
           .to(q("[data-loader]"), { yPercent: -100, duration: 0.8, ease: "expo.inOut" }, "+=0.1")
+          // Take the sheet out completely once it has lifted. Left in place (only moved off-screen)
+          // it is still a full-screen fixed element in the page's INVERSE colour, and mobile Safari
+          // tints its toolbar from fixed elements — the bar ended up dark on the light theme.
+          .set(q("[data-loader]"), { display: "none" })
           // 2. name rises letter by letter, then the rest
           .from(name.chars, { yPercent: 110, duration: 1, stagger: 0.03 }, "-=0.4")
           .from(q("[data-hero-rule]"), { scaleX: 0, duration: 1, ease: "power3.inOut" }, "-=0.8")

@@ -296,7 +296,7 @@ export default function Home() {
         </section>
       </main>
 
-      <footer className="overflow-hidden">
+      <footer className="overflow-hidden pb-[env(safe-area-inset-bottom)]">
         <div className="label mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-8 gap-y-3 px-4 py-6 text-dim sm:px-6">
           <p>© {new Date().getFullYear()} {profile.name}</p>
           <p>{profile.location}</p>
