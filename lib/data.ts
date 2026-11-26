@@ -125,6 +125,33 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    name: "Ashty Market",
+    tagline: "Supplier debt & payments system — in daily use",
+    kind: "Freelance · client project in production",
+    period: "Jan 2026 — Present",
+    text: "Ashty Market buys from a dozen supplier companies on credit, in both dinars and dollars. This system records every purchase and payment with its receipt photo, shows exactly what is owed to whom and what is overdue, and sends a supplier their statement on WhatsApp. Each customer gets their own server and database, set up from a written guide.",
+    points: [
+      "Overdue debt worked out per purchase: payments are applied to the oldest purchases first (FIFO), so every unpaid invoice knows how much is left and whether its due date has passed",
+      "Two payments for the same supplier at the same moment can never push a balance below zero: each change takes a PostgreSQL advisory lock on that supplier for the length of its transaction",
+      "Reports dashboard: debt in IQD and USD with a live exchange rate, a six-month purchase / payment trend, debt aging (0–30, 31–60, 61–90, 90+ days), biggest, overdue, upcoming and forgotten debts, Excel export",
+      "Supplier statements as PDF, shared to WhatsApp in one tap; phone numbers are call links",
+      "JWT login with hashed passwords and a login-attempt limit, a full audit log of who changed what, and all times shown in Iraq time",
+      "Receipt photos straight from the phone camera, with iPhone HEIC converted to JPEG; installable as a PWA in the store's yellow-and-black brand",
+      "53 automated tests (xUnit) cover the ledger, authentication, pagination and reports",
+    ],
+    tech: ["ASP.NET Core (.NET 10)", "EF Core", "PostgreSQL", "JWT", "xUnit", "Next.js 16", "React 19", "Serwist PWA", "ImageKit", "Docker", "Render", "Vercel"],
+    shots: [
+      { src: "/shots/ashty-report-desktop.webp", alt: "Reports dashboard — total debt in IQD and USD, monthly change and six-month trend" },
+      { src: "/shots/ashty-suppliers.webp", alt: "Suppliers — total owed in both currencies, search and latest activity", mobile: true },
+      { src: "/shots/ashty-profile.webp", alt: "Supplier page — balance due, add a payment or a purchase, statement", mobile: true },
+      { src: "/shots/ashty-report.webp", alt: "Reports on the phone — debt now, this month vs last month", mobile: true },
+      { src: "/shots/ashty-trend.webp", alt: "Purchase / payment trend and remaining debt over six months", mobile: true },
+      { src: "/shots/ashty-overdue.webp", alt: "Overdue debts — days late per supplier", mobile: true },
+      { src: "/shots/ashty-statement.webp", alt: "Supplier statement — share as PDF on WhatsApp or print", mobile: true },
+      { src: "/shots/ashty-login.webp", alt: "Sign-in in the Ashty Market brand", mobile: true },
+    ],
+  },
+  {
     name: "Xanchy",
     tagline: "Online ticket booking platform",
     kind: "University research project · Salahaddin University",
@@ -165,18 +192,6 @@ export const projects: Project[] = [
       { src: "/shots/pizza-menu.webp", alt: "Fast Pizza menu — prices by size", mobile: true },
       { src: "/shots/pizza-kitchen.webp", alt: "Kitchen screen sign-in", mobile: true },
     ],
-  },
-  {
-    name: "Ashty Market",
-    tagline: "Supplier & transaction tracker",
-    kind: "Freelance · client project",
-    period: "Jan — Feb 2026",
-    text: "A mobile-first app for a local market to record supplier purchases and payments and see what is owed to whom.",
-    points: [
-      "ASP.NET Core API with Identity + JWT and PostgreSQL",
-      "Next.js PWA with photo upload and automatic HEIC → JPEG conversion for iPhone pictures",
-    ],
-    tech: ["ASP.NET Core", "Identity", "PostgreSQL", "Next.js", "PWA"],
   },
   {
     name: "Exchange Rate Board",

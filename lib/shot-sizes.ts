@@ -23,6 +23,14 @@ const sizes: Record<string, [number, number]> = {
   "/shots/xanchy-organizer.webp": [1600, 750],
   "/shots/xanchy-seatmap.webp": [1007, 574],
   "/shots/xanchy-tickets.webp": [826, 1001],
+  "/shots/ashty-login.webp": [780, 1328],
+  "/shots/ashty-overdue.webp": [780, 1328],
+  "/shots/ashty-profile.webp": [780, 1328],
+  "/shots/ashty-report-desktop.webp": [1600, 1000],
+  "/shots/ashty-report.webp": [780, 1328],
+  "/shots/ashty-statement.webp": [780, 1328],
+  "/shots/ashty-suppliers.webp": [780, 1328],
+  "/shots/ashty-trend.webp": [780, 1328],
 };
 
 export const dims = (src: string) => {
